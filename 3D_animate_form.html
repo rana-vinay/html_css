@@ -1,0 +1,135 @@
+<html>
+<head>
+<title>Animated Form</title>
+
+<style>
+body{
+    background:linear-gradient(to right, #74ebd5, #ACB6E5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    font-family:Arial,sans-serif;
+    perspective:1500px;
+    overflow:hidden;
+}
+
+form{
+    background: white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.3);
+    animation:fadeIn 1s ease;
+    transform-style:preserve-3d;
+    transition:transform 0.15s ease-out, box-shadow 0.3s ease;
+    width:400px;
+}
+
+form:hover{
+    box-shadow:0 25px 45px rgba(0,0,0,0.35);
+}
+
+b{
+    display:block;
+    transform:translateZ(25px);
+}
+
+input,textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:15px;
+    border:2px solid #ccc;
+    border-radius:10px;
+    transition:0.3s;
+    transform:translateZ(15px);
+}
+
+input:focus,textarea:focus{
+    border-color: rgb(0, 51, 236);
+    box-shadow:0 0 10px rgb(66, 3, 255);
+    outline:none;
+    transform:translateZ(35px) scale(1.02);
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background: #007BFF;
+    color: white;
+    border:none;
+    border-radius:8px;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+    transform:translateZ(45px);
+}
+
+button:hover{
+    background: #0056b3;
+    transform:translateZ(55px) scale(1.05);
+    box-shadow:0 10px 20px rgba(0,86,179,0.5);
+}
+
+button:active{
+    transform:translateZ(45px) scale(0.97);
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(-30px) rotateX(15deg);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) rotateX(0deg);
+    }
+}
+</style>
+
+<script>
+function showMessage(){
+    alert("✅ Form Submitted Successfully!");
+    return false;
+}
+
+function tiltForm(e){
+    const form = document.getElementById("myForm");
+    const rect = form.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const rotateX = ((y / rect.height) - 0.5) * -12;
+    const rotateY = ((x / rect.width) - 0.5) * 12;
+    form.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+}
+
+function resetTilt(){
+    const form = document.getElementById("myForm");
+    form.style.transform = "rotateX(0deg) rotateY(0deg)";
+}
+</script>
+
+</head>
+
+<body onmousemove="tiltForm(event)" onmouseleave="resetTilt()">
+
+<form id="myForm" onsubmit="return showMessage();">
+
+<b>Name:</b>
+<input type="text" placeholder="Enter Your Name">
+
+<b>Username:</b>
+<input type="text" placeholder="Enter Your Username">
+
+<b>Password:</b>
+<input type="password" placeholder="Enter Your Password">
+
+<b>Address:</b>
+<textarea rows="4" placeholder="Enter Your Address"></textarea>
+
+<button type="submit"><b>Submit</b></button>
+
+</form>
+
+</body>
+</html>

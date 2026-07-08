@@ -1,0 +1,217 @@
+<html>
+<head>
+<title>Animated Form</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Outfit:wght@300;400;600&display=swap');
+
+*{ box-sizing:border-box; }
+
+body{
+    margin:0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(124,58,237,0.25), transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(6,182,212,0.25), transparent 40%),
+        #0b0f19;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    font-family:'Outfit',sans-serif;
+    perspective:1600px;
+    overflow:hidden;
+}
+
+.orb{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:.45;
+    animation:float 10s ease-in-out infinite;
+}
+.orb.a{ width:320px; height:320px; background:#7c3aed; top:-100px; left:-100px; }
+.orb.b{ width:280px; height:280px; background:#06b6d4; bottom:-120px; right:-80px; animation-delay:3s; }
+@keyframes float{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{ transform:translate(25px,-25px) scale(1.1); }
+}
+
+form{
+    position:relative;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.12);
+    padding:40px 38px 34px;
+    border-radius:22px;
+    box-shadow:
+        0 8px 32px rgba(0,0,0,0.45),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    animation:fadeIn .9s cubic-bezier(.2,.9,.25,1);
+    transform-style:preserve-3d;
+    transition:transform 0.15s ease-out, box-shadow 0.3s ease;
+    width:400px;
+}
+
+form::before{
+    content:"";
+    position:absolute;
+    inset:-1px;
+    border-radius:23px;
+    padding:1px;
+    background:linear-gradient(135deg,#7c3aed,#06b6d4,#f472b6);
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    opacity:.55;
+    pointer-events:none;
+    transform:translateZ(-1px);
+}
+
+h2{
+    font-family:'Space Grotesk',sans-serif;
+    color:#fff;
+    margin:0 0 26px;
+    font-size:1.5rem;
+    letter-spacing:.01em;
+    transform:translateZ(30px);
+}
+h2 span{ color:#22d3ee; }
+
+b{
+    display:block;
+    color:#c7d2fe;
+    font-weight:500;
+    font-size:.85rem;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+    margin-bottom:6px;
+    transform:translateZ(25px);
+}
+
+input,textarea{
+    width:100%;
+    padding:12px 14px;
+    margin-top:2px;
+    margin-bottom:18px;
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:12px;
+    background:rgba(255,255,255,0.05);
+    color:#f1f5f9;
+    font-family:'Outfit',sans-serif;
+    font-size:.95rem;
+    transition:.3s ease;
+    transform:translateZ(15px);
+}
+
+input::placeholder, textarea::placeholder{ color:#8b93a7; }
+
+input:focus,textarea:focus{
+    border-color: #22d3ee;
+    background:rgba(34,211,238,0.08);
+    box-shadow:0 0 0 4px rgba(34,211,238,0.15), 0 0 20px rgba(34,211,238,0.25);
+    outline:none;
+    transform:translateZ(35px) scale(1.02);
+}
+
+textarea{ resize:vertical; min-height:80px; }
+
+button{
+    width:100%;
+    padding:13px;
+    background:linear-gradient(135deg,#7c3aed,#06b6d4);
+    color: white;
+    border:none;
+    border-radius:12px;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:.03em;
+    cursor:pointer;
+    transition:.3s ease;
+    transform:translateZ(45px);
+    box-shadow:0 10px 24px -6px rgba(124,58,237,.55);
+    position:relative;
+    overflow:hidden;
+}
+
+button::after{
+    content:"";
+    position:absolute;
+    top:0; left:-60%;
+    width:50%; height:100%;
+    background:linear-gradient(120deg,transparent,rgba(255,255,255,.5),transparent);
+    transform:skewX(-20deg);
+    animation:shine 3s ease-in-out infinite;
+}
+@keyframes shine{
+    0%{ left:-60%; }
+    45%{ left:130%; }
+    100%{ left:130%; }
+}
+
+button:hover{
+    transform:translateZ(55px) scale(1.03);
+    box-shadow:0 14px 30px -6px rgba(6,182,212,.6);
+}
+
+button:active{
+    transform:translateZ(45px) scale(0.97);
+}
+
+@keyframes fadeIn{
+    from{ opacity:0; transform:translateY(-40px) rotateX(18deg) scale(.94); }
+    to{ opacity:1; transform:translateY(0) rotateX(0deg) scale(1); }
+}
+</style>
+
+<script>
+function showMessage(){
+    alert("✅ Form Submitted Successfully!");
+    return false;
+}
+
+function tiltForm(e){
+    const form = document.getElementById("myForm");
+    const rect = form.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const rotateX = ((y / rect.height) - 0.5) * -12;
+    const rotateY = ((x / rect.width) - 0.5) * 12;
+    form.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+}
+
+function resetTilt(){
+    document.getElementById("myForm").style.transform = "rotateX(0deg) rotateY(0deg)";
+}
+</script>
+
+</head>
+
+<body onmousemove="tiltForm(event)" onmouseleave="resetTilt()">
+
+<div class="orb a"></div>
+<div class="orb b"></div>
+
+<form id="myForm" onsubmit="return showMessage();">
+
+<h2>Create <span>Account</span></h2>
+
+<b>Name</b>
+<input type="text" placeholder="Enter Your Name">
+
+<b>Username</b>
+<input type="text" placeholder="Enter Your Username">
+
+<b>Password</b>
+<input type="password" placeholder="Enter Your Password">
+
+<b>Address</b>
+<textarea rows="3" placeholder="Enter Your Address"></textarea>
+
+<button type="submit">Submit</button>
+
+</form>
+
+</body>
+</html>
